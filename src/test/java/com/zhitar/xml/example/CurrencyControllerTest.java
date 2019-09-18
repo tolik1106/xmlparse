@@ -14,7 +14,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -27,7 +26,6 @@ public class CurrencyControllerTest {
     private WebApplicationContext context;
 
     private MockMvc mockMvc;
-    private TestUtil testUtil = new TestUtil();
 
     @Before
     public void setUp() throws Exception {
@@ -36,20 +34,9 @@ public class CurrencyControllerTest {
 
     @Test
     public void handleXMLPostRequest() throws Exception {
-        mockMvc.perform(post("/currency")
-                .contentType(MediaType.APPLICATION_XML)
-                .content(createExchangeInXml()))
-                .andDo(print())
-                .andExpect(status().isCreated());
-
         this.mockMvc.perform(get("/currency")
                 .accept(MediaType.APPLICATION_JSON_VALUE))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
-
-    private String createExchangeInXml() {
-        return testUtil.getXmlFromFile("exchange.xml");
-    }
-
 }
